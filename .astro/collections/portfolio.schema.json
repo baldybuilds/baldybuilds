@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "client": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "screenshot": {
+      "type": "string"
+    },
+    "liveUrl": {
+      "type": "string",
+      "format": "uri"
+    },
+    "outcome": {
+      "type": "string"
+    },
+    "order": {
+      "default": 99,
+      "type": "number"
+    },
+    "featured": {
+      "default": false,
+      "type": "boolean"
+    },
+    "$schema": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "client",
+    "tags",
+    "liveUrl",
+    "outcome"
+  ]
+}

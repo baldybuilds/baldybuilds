@@ -1,0 +1,85 @@
+---
+import { getCollection, render } from 'astro:content';
+import PageLayout from '@/layouts/PageLayout.astro';
+import Button from '@/components/ui/Button.astro';
+import Badge from '@/components/ui/Badge.astro';
+import CTABanner from '@/components/sections/CTABanner.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('portfolio');
+  return entries.map((entry) => ({
+    params: { slug: entry.id.replace(/\.md$/, '') },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<PageLayout
+  title={`${entry.data.client} | Portfolio`}
+  description={`Case study: ${entry.data.outcome}, built by BaldyBuilds.`}
+  ogImage={entry.data.screenshot ?? '/og-image.jpg'}
+>
+  <!-- Back link -->
+  <div class="container pt-8">
+    <a href="/portfolio" class="inline-flex items-center gap-2 text-sm text-muted hover:text-text transition-colors">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back to portfolio
+    </a>
+  </div>
+
+  <!-- Header -->
+  <section class="section-padding border-b border-border">
+    <div class="container">
+      <div class="flex flex-wrap gap-2 mb-6">
+        {entry.data.tags.map((tag: string) => <Badge>{tag}</Badge>)}
+      </div>
+      <h1 class="font-display font-bold text-[clamp(2.25rem,4vw,3.5rem)] text-text mb-4">
+        {entry.data.client}
+      </h1>
+      <p class="text-xl text-muted max-w-2xl mb-8">{entry.data.outcome}</p>
+      <Button
+        href={entry.data.liveUrl}
+        variant="outline"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Visit live site
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M5.5 2.5H2A1.5 1.5 0 00.5 4v8A1.5 1.5 0 002 13.5h8A1.5 1.5 0 0011.5 12V8.5M8.5.5h5m0 0v5m0-5L6 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </Button>
+    </div>
+  </section>
+
+  {entry.data.screenshot && (
+    <div class="border-b border-border bg-surface">
+      <div class="container py-10">
+        <div class="rounded-xl overflow-hidden border border-border shadow-2xl">
+          <img
+            src={entry.data.screenshot}
+            alt={`Screenshot of ${entry.data.client} website`}
+            class="w-full h-auto"
+            width="1200"
+            height="675"
+          />
+        </div>
+      </div>
+    </div>
+  )}
+
+  <!-- Case study content -->
+  <section class="section-padding">
+    <div class="container">
+      <div class="max-w-2xl prose prose-invert prose-headings:font-display prose-headings:font-bold prose-p:text-muted prose-a:text-accent">
+        <Content />
+      </div>
+    </div>
+  </section>
+
+  <CTABanner
+    headline="Want a site like this?"
+    subtext="Get in touch and I'll put together a proposal tailored to your business."
+    cta="Get a free quote"
+  />
+</PageLayout>

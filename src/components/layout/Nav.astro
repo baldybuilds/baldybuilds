@@ -1,0 +1,111 @@
+---
+import { navLinks } from '@/data/nav';
+const { pathname } = Astro.url;
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 px-4 pt-4 pointer-events-none">
+  <div class="max-w-7xl mx-auto flex items-center justify-between gap-4 pointer-events-auto">
+
+    <!-- Logo -->
+    <a
+      href="/"
+      class="flex items-center gap-2.5 font-display font-bold text-base tracking-tight text-text hover:text-accent transition-colors shrink-0"
+    >
+      <img src="/logo.svg" alt="BaldyBuilds" width="32" height="32" class="w-8 h-8" />
+      <span>BaldyBuilds</span>
+    </a>
+
+    <!-- Desktop: centered pill nav -->
+    <nav
+      class="hidden md:flex items-center gap-1 bg-surface/80 backdrop-blur-lg border border-border rounded-full px-2 py-1.5"
+      aria-label="Main navigation"
+    >
+      {navLinks.map(({ label, href }) => (
+        <a
+          href={href}
+          class={`relative px-4 py-1.5 text-sm font-medium rounded-full transition-all duration-200
+            ${pathname.startsWith(href)
+              ? 'bg-surface-2 text-text'
+              : 'text-muted hover:text-text hover:bg-surface-2/60'
+            }`}
+        >
+          {label}
+          {pathname.startsWith(href) && (
+            <span class="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-accent" aria-hidden="true"></span>
+          )}
+        </a>
+      ))}
+    </nav>
+
+    <!-- Desktop CTA -->
+    <a
+      href="/contact"
+      class="hidden md:inline-flex items-center gap-2 bg-accent text-black text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-accent-hover transition-colors active:scale-[0.97] shrink-0"
+    >
+      Get a quote
+    </a>
+
+    <!-- Mobile hamburger -->
+    <button
+      id="nav-toggle"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      aria-label="Toggle menu"
+      class="md:hidden flex flex-col gap-1.5 p-2 text-text bg-surface border border-border rounded-lg pointer-events-auto"
+    >
+      <span class="block w-5 h-0.5 bg-current transition-all duration-200 origin-center" id="bar-1"></span>
+      <span class="block w-5 h-0.5 bg-current transition-all duration-200" id="bar-2"></span>
+      <span class="block w-3.5 h-0.5 bg-current transition-all duration-200 origin-center" id="bar-3"></span>
+    </button>
+  </div>
+
+  <!-- Mobile menu — full-width dropdown below the header row -->
+  <div
+    id="mobile-menu"
+    class="md:hidden hidden mt-2 mx-0 rounded-2xl border border-border bg-surface/95 backdrop-blur-lg overflow-hidden pointer-events-auto"
+  >
+    <ul class="flex flex-col p-3 gap-1 list-none m-0">
+      {navLinks.map(({ label, href }) => (
+        <li>
+          <a
+            href={href}
+            class={`flex items-center py-2.5 px-4 text-sm font-medium rounded-xl transition-colors
+              ${pathname.startsWith(href)
+                ? 'bg-surface-2 text-text'
+                : 'text-muted hover:text-text hover:bg-surface-2/60'
+              }`}
+          >
+            {label}
+          </a>
+        </li>
+      ))}
+      <li class="pt-2 border-t border-border mt-1">
+        <a
+          href="/contact"
+          class="flex items-center justify-center bg-accent text-black text-sm font-semibold px-5 py-3 rounded-xl hover:bg-accent-hover transition-colors"
+        >
+          Get a quote
+        </a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<!-- Push page content below the floating nav -->
+<div class="h-20"></div>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const menu = document.getElementById('mobile-menu');
+  const bar1 = document.getElementById('bar-1');
+  const bar3 = document.getElementById('bar-3');
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+    menu?.classList.toggle('hidden');
+    bar1?.classList.toggle('rotate-45');
+    bar1?.classList.toggle('translate-y-2');
+    bar3?.classList.toggle('opacity-0');
+  });
+</script>

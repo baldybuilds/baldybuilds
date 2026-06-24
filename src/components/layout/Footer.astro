@@ -1,0 +1,53 @@
+---
+import { navLinks } from '@/data/nav';
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-border bg-surface">
+  <div class="container py-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+      <!-- Brand -->
+      <div>
+        <a href="/" class="inline-flex items-center gap-2 font-display font-bold text-lg text-text hover:text-accent transition-colors mb-3">
+          <img src="/logo.svg" alt="" width="28" height="28" class="w-7 h-7" aria-hidden="true" />
+          BaldyBuilds
+        </a>
+        <p class="text-sm text-muted leading-relaxed max-w-xs">
+          Professional websites for local businesses. Built in Ayrshire, built to last.
+        </p>
+      </div>
+
+      <!-- Nav links -->
+      <nav aria-label="Footer navigation">
+        <p class="text-xs font-semibold uppercase tracking-widest text-muted-2 mb-4">Pages</p>
+        <ul class="flex flex-col gap-3 list-none m-0 p-0">
+          {navLinks.map(({ label, href }) => (
+            <li>
+              <a href={href} class="text-sm text-muted hover:text-text transition-colors">
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <!-- Contact -->
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest text-muted-2 mb-4">Get in touch</p>
+        <a href="mailto:hello@baldybuilds.co.uk" class="text-sm text-muted hover:text-accent transition-colors block mb-2">
+          hello@baldybuilds.co.uk
+        </a>
+        <p class="text-sm text-muted">Based in Ayrshire, Scotland</p>
+      </div>
+    </div>
+
+    <div class="pt-8 border-t border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <p class="text-xs text-muted-2">
+        &copy; {year} BaldyBuilds. All rights reserved.
+      </p>
+      <p class="text-xs text-muted-2">
+        Built with Astro &amp; Tailwind. Fast by default.
+      </p>
+    </div>
+  </div>
+</footer>

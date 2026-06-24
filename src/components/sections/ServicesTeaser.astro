@@ -1,0 +1,99 @@
+---
+import Button from '@/components/ui/Button.astro';
+import { packages } from '@/data/packages';
+---
+
+<section class="section-padding border-t border-border">
+  <div class="container">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12" data-animate>
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-3">Pricing</p>
+        <h2 class="font-display font-bold text-[clamp(1.75rem,3.5vw,2.75rem)] text-text">
+          Simple, fixed pricing
+        </h2>
+        <p class="text-muted mt-2 max-w-md">No hourly rates. No surprise invoices. Just a setup fee and a monthly retainer.</p>
+      </div>
+      <Button href="/services" variant="outline">See full details</Button>
+    </div>
+
+    <!-- Package cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {packages.map((pkg, i) => (
+        <div
+          class={`relative flex flex-col rounded-[--radius-card] border p-6 transition-all duration-300 hover:-translate-y-1 group
+            ${pkg.highlight
+              ? 'border-accent/50 bg-surface'
+              : 'border-border bg-surface hover:border-border'
+            }`}
+          data-animate="scale"
+          data-delay={String(i + 1)}
+        >
+          {/* Highlight card ambient glow */}
+          {pkg.highlight && (
+            <div
+              class="absolute inset-0 rounded-[--radius-card] pointer-events-none"
+              style="background: radial-gradient(ellipse at top, rgba(245,158,11,0.08), transparent 70%); animation: glow-pulse 3s ease-in-out infinite;"
+              aria-hidden="true"
+            ></div>
+          )}
+
+          {pkg.highlight && (
+            <span class="absolute -top-3 left-6 bg-accent text-black text-xs font-bold px-3 py-1 rounded-full">
+              Most popular
+            </span>
+          )}
+
+          <div class="mb-6">
+            <h3 class="font-display font-bold text-xl text-text mb-1">{pkg.name}</h3>
+            <p class="text-sm text-muted">{pkg.tagline}</p>
+          </div>
+
+          <!-- Price -->
+          <div class="mb-6">
+            {pkg.poa ? (
+              <p class="font-display font-bold text-3xl text-text">POA</p>
+            ) : (
+              <>
+                <div class="flex items-baseline gap-2">
+                  <span class="font-display font-bold text-3xl text-text">£{pkg.setup}</span>
+                  <span class="text-muted text-sm">setup</span>
+                </div>
+                <p class="text-sm text-muted mt-1">then £{pkg.monthly}/mo</p>
+              </>
+            )}
+          </div>
+
+          <!-- Top features -->
+          <ul class="flex flex-col gap-2 mb-8 flex-1">
+            {pkg.features.slice(0, 4).map((feature) => (
+              <li class="flex items-start gap-2 text-sm text-muted">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="shrink-0 mt-0.5" aria-hidden="true">
+                  <path d="M3 8l3 3 7-7" stroke="var(--color-accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                {feature}
+              </li>
+            ))}
+          </ul>
+
+          <a
+            href="/contact"
+            class={`btn-shimmer inline-flex items-center justify-center gap-2 font-semibold text-sm rounded-lg px-6 py-3 transition-all duration-200 active:scale-[0.98]
+              ${pkg.highlight
+                ? 'bg-accent text-black hover:bg-accent-hover'
+                : 'border border-border text-text hover:border-accent hover:text-accent'
+              }`}
+            data-ph-event="cta_click"
+            data-ph-props={`{"location":"services_teaser","package":"${pkg.name}"}`}
+          >
+            {pkg.cta}
+          </a>
+        </div>
+      ))}
+    </div>
+
+    <p class="text-xs text-muted-2 text-center mt-6" data-animate data-delay="4">
+      Monthly fee covers hosting, domain, SSL, security updates, and up to 1hr of edits. Minimum 3-month term.
+    </p>
+  </div>
+</section>

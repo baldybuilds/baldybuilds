@@ -1,0 +1,70 @@
+---
+import { getCollection } from 'astro:content';
+import Button from '@/components/ui/Button.astro';
+import Badge from '@/components/ui/Badge.astro';
+
+const allEntries = await getCollection('portfolio');
+const featured = allEntries
+  .filter((e) => e.data.featured)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 2);
+---
+
+{featured.length > 0 && (
+  <section class="section-padding border-t border-border">
+    <div class="container">
+      <!-- Header -->
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12" data-animate>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-3">Portfolio</p>
+          <h2 class="font-display font-bold text-[clamp(1.75rem,3.5vw,2.75rem)] text-text">
+            Work that gets results
+          </h2>
+        </div>
+        <Button href="/portfolio" variant="outline">View all work</Button>
+      </div>
+
+      <!-- Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {featured.map((entry, i) => (
+          <a
+            href={`/portfolio/${entry.id.replace(/\.md$/, '')}`}
+            class="group flex flex-col rounded-[--radius-card] border border-border bg-surface overflow-hidden hover:border-accent/40 transition-all duration-300 hover:-translate-y-1"
+            data-animate="scale"
+            data-delay={String(i + 1)}
+          >
+            <!-- Screenshot with overlay -->
+            <div class="aspect-video bg-surface-2 overflow-hidden relative">
+              <img
+                src={entry.data.screenshot}
+                alt={`Screenshot of ${entry.data.client} website`}
+                class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                width="800"
+                height="450"
+                loading="lazy"
+              />
+              <!-- Hover overlay -->
+              <div class="absolute inset-0 bg-bg/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <span class="inline-flex items-center gap-2 bg-accent text-black text-sm font-semibold px-5 py-2.5 rounded-lg translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                  View case study
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-6 flex-1 flex flex-col">
+              <div class="flex flex-wrap gap-2 mb-4">
+                {entry.data.tags.map((tag: string) => <Badge>{tag}</Badge>)}
+              </div>
+              <h3 class="font-display font-bold text-lg text-text mb-2 group-hover:text-accent transition-colors">
+                {entry.data.client}
+              </h3>
+              <p class="text-sm text-muted flex-1">{entry.data.outcome}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+)}

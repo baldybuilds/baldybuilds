@@ -1,0 +1,97 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Button from '@/components/ui/Button.astro';
+import CTABanner from '@/components/sections/CTABanner.astro';
+
+const values = [
+  {
+    title: 'Direct contact',
+    description: "You deal with me, not an account manager. I build your site, I answer your emails, I make your changes.",
+  },
+  {
+    title: 'No jargon',
+    description: "I explain things in plain English. If something sounds overly technical, just ask. I'm happy to break it down.",
+  },
+  {
+    title: 'Mobile-first',
+    description: "Every site starts on mobile. Your customers are on their phones. Your website should work perfectly on them.",
+  },
+  {
+    title: 'Built to last',
+    description: "I use modern, fast technology that stays fast. No page builders that slow down over time.",
+  },
+];
+---
+
+<PageLayout
+  title="About"
+  description="BaldyBuilds is Jamie McCallum, a web developer based in Ayrshire building professional websites for local businesses."
+>
+  <!-- Header -->
+  <section class="section-padding border-b border-border">
+    <div class="container">
+      <div class="max-w-2xl">
+        <p class="text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-4">About</p>
+        <h1 class="font-display font-bold text-[clamp(2.25rem,4vw,3.5rem)] text-text mb-6">
+          Hi, I'm Jamie.<br />I build websites for local businesses.
+        </h1>
+        <p class="text-lg text-muted mb-6 leading-relaxed">
+          BaldyBuilds is me, a solo web developer based in Ayrshire. I started it because I kept seeing local businesses settle for slow, ugly websites built on page builders, or worse, no website at all.
+        </p>
+        <p class="text-muted mb-8 leading-relaxed">
+          You know your trade better than anyone. You shouldn't also have to learn web development to get a professional website. That's my job. You tell me what you need, I build it, and I keep it running so you can focus on the work that actually earns you money.
+        </p>
+        <Button href="/contact" variant="primary" phEvent="cta_click" phProps='{"location":"about"}'>
+          Work with me
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why solo over agency -->
+  <section class="section-padding border-b border-border">
+    <div class="container">
+      <div class="max-w-2xl mb-10">
+        <p class="text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-3">Why BaldyBuilds</p>
+        <h2 class="font-display font-bold text-[clamp(1.75rem,3vw,2.5rem)] text-text mb-3">
+          Why hire a solo developer over an agency?
+        </h2>
+        <p class="text-muted">
+          Agencies are great if you're a big company with a big budget. If you're a local business owner, you want someone who picks up the phone and gets it done.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl">
+        {values.map((v) => (
+          <div class="p-6 rounded-[--radius-card] border border-border bg-surface">
+            <h3 class="font-display font-bold text-text mb-2">{v.title}</h3>
+            <p class="text-sm text-muted leading-relaxed">{v.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Stack -->
+  <section class="section-padding border-b border-border">
+    <div class="container">
+      <div class="max-w-2xl">
+        <p class="text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-3">Tech stack</p>
+        <h2 class="font-display font-bold text-[clamp(1.75rem,3vw,2.5rem)] text-text mb-3">
+          Built with modern tools
+        </h2>
+        <p class="text-muted mb-6 leading-relaxed">
+          Every site I build uses the same stack: Astro, Tailwind, TypeScript, hosted on Netlify. This combination delivers fast, lightweight websites that score well on Google and don't break down over time.
+        </p>
+        <p class="text-muted leading-relaxed">
+          I use the same tools on every project so maintenance is simple. If I'm on holiday and something needs fixing urgently, any modern developer can pick up the code and work with it.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <CTABanner
+    headline="Let's build something great"
+    subtext="Get in touch today. I'll have a proposal back to you within 24 hours."
+  />
+</PageLayout>

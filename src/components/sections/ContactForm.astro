@@ -1,0 +1,133 @@
+---
+// Client island — rendered statically, JS handles submission
+---
+
+<form
+  id="contact-form"
+  class="flex flex-col gap-5"
+  novalidate
+>
+  <!-- Honeypot (hidden from humans, caught by server) -->
+  <input type="text" name="_honey" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+    <div class="flex flex-col gap-2">
+      <label for="name" class="text-sm font-medium text-text">Your name <span class="text-accent">*</span></label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        required
+        autocomplete="name"
+        placeholder="John Smith"
+        class="bg-surface border border-border text-text placeholder:text-muted-2 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-accent transition-colors"
+      />
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="business" class="text-sm font-medium text-text">Business name <span class="text-accent">*</span></label>
+      <input
+        type="text"
+        id="business"
+        name="business"
+        required
+        placeholder="Smith Plumbing Ltd"
+        class="bg-surface border border-border text-text placeholder:text-muted-2 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-accent transition-colors"
+      />
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+    <div class="flex flex-col gap-2">
+      <label for="email" class="text-sm font-medium text-text">Email address <span class="text-accent">*</span></label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        autocomplete="email"
+        placeholder="john@example.co.uk"
+        class="bg-surface border border-border text-text placeholder:text-muted-2 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-accent transition-colors"
+      />
+    </div>
+    <div class="flex flex-col gap-2">
+      <label for="phone" class="text-sm font-medium text-text">Phone <span class="text-muted">(optional)</span></label>
+      <input
+        type="tel"
+        id="phone"
+        name="phone"
+        autocomplete="tel"
+        placeholder="07700 900000"
+        class="bg-surface border border-border text-text placeholder:text-muted-2 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-accent transition-colors"
+      />
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <label for="message" class="text-sm font-medium text-text">What do you need? <span class="text-accent">*</span></label>
+    <textarea
+      id="message"
+      name="message"
+      required
+      rows="5"
+      placeholder="Tell me a bit about your business and what you're looking for..."
+      class="bg-surface border border-border text-text placeholder:text-muted-2 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-accent transition-colors resize-none"
+    ></textarea>
+  </div>
+
+  <!-- Submit -->
+  <button
+    type="submit"
+    id="submit-btn"
+    class="inline-flex items-center justify-center gap-2 bg-accent text-black font-semibold text-sm rounded-lg px-8 py-4 hover:bg-accent-hover transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+  >
+    Send enquiry
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+
+  <!-- Status messages -->
+  <div id="form-status" class="hidden" role="alert" aria-live="polite"></div>
+</form>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const btn = document.getElementById('submit-btn') as HTMLButtonElement;
+  const status = document.getElementById('form-status') as HTMLDivElement;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const data = Object.fromEntries(new FormData(form).entries());
+
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    status.className = 'hidden';
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      const json = await res.json();
+
+      if (res.ok && json.success) {
+        form.reset();
+        status.className = 'rounded-lg border border-green-800 bg-green-900/20 text-green-400 px-4 py-3 text-sm';
+        status.textContent = "Thanks, I'll be in touch within 24 hours.";
+
+        if (typeof window !== 'undefined' && (window as any).posthog) {
+          (window as any).posthog.capture('contact_form_submitted');
+        }
+      } else {
+        throw new Error(json.error ?? 'Something went wrong');
+      }
+    } catch (err: any) {
+      status.className = 'rounded-lg border border-red-800 bg-red-900/20 text-red-400 px-4 py-3 text-sm';
+      status.textContent = err.message ?? 'Something went wrong. Please try again or email hello@baldybuilds.co.uk.';
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = 'Send enquiry <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    }
+  });
+</script>

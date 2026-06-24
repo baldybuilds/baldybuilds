@@ -1,0 +1,61 @@
+---
+interface Props {
+  headline?: string;
+  subtext?: string;
+  cta?: string;
+}
+
+const {
+  headline = 'Ready to get online?',
+  subtext = "Get in touch today and I'll have a proposal back to you within 24 hours.",
+  cta = 'Get a free quote',
+} = Astro.props;
+---
+
+<section class="section-padding border-t border-border">
+  <div class="container">
+    <div
+      class="relative rounded-2xl border border-border bg-surface p-10 md:p-16 overflow-hidden text-center"
+      data-animate
+    >
+      <!-- Animated gradient background -->
+      <div
+        class="absolute inset-0 opacity-[0.07] pointer-events-none"
+        style="background: conic-gradient(from 0deg at 50% 50%, var(--color-accent), transparent 40%, var(--color-accent) 60%, transparent 80%, var(--color-accent)); animation: spin 12s linear infinite;"
+        aria-hidden="true"
+      ></div>
+
+      <!-- Glow -->
+      <div
+        class="absolute top-0 left-1/2 -translate-x-1/2 w-125 h-62.5 pointer-events-none"
+        style="background: radial-gradient(ellipse, rgba(245,158,11,0.18), transparent 70%); animation: glow-pulse 4s ease-in-out infinite;"
+        aria-hidden="true"
+      ></div>
+
+      <!-- Content -->
+      <div class="relative">
+        <p class="text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-4">Let's talk</p>
+        <h2 class="font-display font-bold text-[clamp(2rem,4vw,3.5rem)] text-text mb-4">
+          {headline}
+        </h2>
+        <p class="text-muted max-w-md mx-auto mb-8">{subtext}</p>
+        <a
+          href="/contact"
+          class="btn-shimmer inline-flex items-center gap-2 bg-accent text-black font-semibold text-base rounded-lg px-8 py-4 hover:bg-accent-hover transition-colors active:scale-[0.98]"
+          data-ph-event="cta_click"
+          data-ph-props='{"location":"cta_banner"}'
+        >
+          {cta}
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+</style>

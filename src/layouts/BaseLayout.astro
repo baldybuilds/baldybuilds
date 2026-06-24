@@ -1,0 +1,149 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  canonicalUrl?: string;
+}
+
+const {
+  title,
+  description,
+  ogImage = '/og-image.jpg',
+  ogType = 'website',
+  canonicalUrl,
+} = Astro.props;
+
+const siteUrl = 'https://baldybuilds.co.uk';
+const fullTitle = title === 'BaldyBuilds' ? title : `${title} | BaldyBuilds`;
+const canonical = canonicalUrl ?? new URL(Astro.url.pathname, siteUrl).href;
+const ogImageUrl = new URL(ogImage, siteUrl).href;
+
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'BaldyBuilds',
+  description: 'Web design and development for small local businesses in Ayrshire and Scotland.',
+  url: siteUrl,
+  areaServed: [
+    { '@type': 'Place', name: 'Ayrshire' },
+    { '@type': 'Place', name: 'Scotland' },
+  ],
+  priceRange: '££',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer service',
+    email: 'hello@baldybuilds.co.uk',
+  },
+};
+---
+
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:site_name" content="BaldyBuilds" />
+    <meta property="og:locale" content="en_GB" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Sitemap -->
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Local Business JSON-LD -->
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
+
+    <!-- PostHog Analytics -->
+    {import.meta.env.PUBLIC_POSTHOG_KEY && (
+      <script is:inline define:vars={{ phKey: import.meta.env.PUBLIC_POSTHOG_KEY }}>
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+" (stub)"},o="init bs ws ge fs capture De calculateEventProperties $s $s2 register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveys getSurveys getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty toString opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init(phKey, {
+          api_host: 'https://eu.i.posthog.com',
+          person_profiles: 'identified_only',
+        });
+      </script>
+    )}
+    <!-- Scroll progress bar -->
+    <style>
+      #scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 2px;
+        width: 0%;
+        background: var(--color-accent);
+        z-index: 9999;
+        transition: width 0.1s linear;
+      }
+    </style>
+
+    <!-- Scroll-triggered animations + progress bar -->
+    <script>
+      // Intersection Observer for [data-animate] elements
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+      );
+
+      document.querySelectorAll('[data-animate]').forEach((el) => observer.observe(el));
+
+      // Scroll progress bar
+      const bar = document.getElementById('scroll-progress');
+      if (bar) {
+        window.addEventListener('scroll', () => {
+          const max = document.documentElement.scrollHeight - window.innerHeight;
+          bar.style.width = `${(window.scrollY / max) * 100}%`;
+        }, { passive: true });
+      }
+    </script>
+
+    <!-- CTA click tracking -->
+    <script>
+      document.addEventListener('click', (e) => {
+        const el = (e.target as Element).closest('[data-ph-event]');
+        if (!el) return;
+        const event = el.getAttribute('data-ph-event');
+        const propsStr = el.getAttribute('data-ph-props');
+        if (!event) return;
+        try {
+          const props = propsStr ? JSON.parse(propsStr) : {};
+          if (typeof window !== 'undefined' && (window as any).posthog) {
+            (window as any).posthog.capture(event, props);
+          }
+        } catch {}
+      });
+    </script>
+  </head>
+  <body>
+    <div id="scroll-progress" aria-hidden="true"></div>
+    <slot />
+  </body>
+</html>

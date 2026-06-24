@@ -1,0 +1,173 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Button from '@/components/ui/Button.astro';
+import CTABanner from '@/components/sections/CTABanner.astro';
+import { packages, monthlyIncludes } from '@/data/packages';
+
+const faqs = [
+  {
+    q: "Is there a minimum contract term?",
+    a: "Yes, all packages have a 3-month minimum term on the monthly retainer. After that, you're rolling month-to-month with 30 days notice to cancel.",
+  },
+  {
+    q: "What if I want more than 1 hour of changes in a month?",
+    a: "Any work beyond the included hour is billed at a flat hourly rate agreed upfront. I'll always let you know before going over.",
+  },
+  {
+    q: "Can I use a domain I already own?",
+    a: "Absolutely. We can point your existing domain to your new site, or transfer it to our management, whichever you prefer.",
+  },
+  {
+    q: "Do I own the website?",
+    a: "Yes, 100%. If you ever decide to move on, you take everything with you: the code, the domain, the content.",
+  },
+  {
+    q: "How long does it take to build?",
+    a: "Most Starter and Standard sites are live within 2–3 weeks of receiving your content and sign-off. Custom projects vary depending on scope.",
+  },
+];
+
+const icons: Record<string, string> = {
+  server: '<path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm0 8a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 01-2 2H4a2 2 0 01-2-2v-2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>',
+  globe: '<circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M9 2c0 0-3 2.5-3 7s3 7 3 7M9 2c0 0 3 2.5 3 7s-3 7-3 7M2 9h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
+  lock: '<rect x="4" y="8" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M6 8V6a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
+  shield: '<path d="M9 2L3 5v5c0 3.5 2.5 6.5 6 7.5 3.5-1 6-4 6-7.5V5L9 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>',
+  pencil: '<path d="M11 3l3 3M3 13l1-4L11 3l3 3-7 7-4 1z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>',
+  mail: '<rect x="2" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M2 7l9 6 9-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
+};
+---
+
+<PageLayout
+  title="Services & Pricing"
+  description="Clear, fixed pricing for professional websites. Starter from £600 setup + £35/mo. Standard from £850 setup + £45/mo. Everything included."
+>
+  <!-- Page header -->
+  <section class="section-padding border-b border-border">
+    <div class="container">
+      <p class="text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-4">Pricing</p>
+      <h1 class="font-display font-bold text-[clamp(2.25rem,4vw,3.5rem)] text-text max-w-2xl mb-4">
+        Simple, fixed pricing
+      </h1>
+      <p class="text-lg text-muted max-w-2xl">
+        No hourly rates. No surprise invoices. A one-off setup fee to build your site, then a monthly fee that covers everything: hosting, domain, updates, support.
+      </p>
+    </div>
+  </section>
+
+  <!-- Package cards -->
+  <section class="section-padding">
+    <div class="container">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {packages.map((pkg) => (
+          <div class={`relative flex flex-col rounded-[--radius-card] border p-8 ${pkg.highlight ? 'border-accent' : 'border-border'} bg-surface`}>
+            {pkg.highlight && (
+              <span class="absolute -top-3 left-6 bg-accent text-black text-xs font-bold px-3 py-1 rounded-full">
+                Most popular
+              </span>
+            )}
+
+            <div class="mb-6">
+              <h2 class="font-display font-bold text-2xl text-text mb-1">{pkg.name}</h2>
+              <p class="text-sm text-muted">{pkg.tagline}</p>
+            </div>
+
+            <!-- Price -->
+            <div class="pb-6 mb-6 border-b border-border">
+              {pkg.poa ? (
+                <p class="font-display font-bold text-4xl text-text">POA</p>
+              ) : (
+                <>
+                  <div class="flex items-baseline gap-2">
+                    <span class="font-display font-bold text-4xl text-text">£{pkg.setup}</span>
+                    <span class="text-muted text-sm">setup fee</span>
+                  </div>
+                  <p class="text-muted mt-2">then <strong class="text-text">£{pkg.monthly}/mo</strong></p>
+                </>
+              )}
+            </div>
+
+            <!-- All features -->
+            <ul class="flex flex-col gap-3 flex-1 mb-8">
+              {pkg.features.map((feature) => (
+                <li class="flex items-start gap-3 text-sm text-muted">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" class="shrink-0 mt-0.5" aria-hidden="true">
+                    <path d="M3 9l4 4 8-8" stroke="var(--color-accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  {feature}
+                </li>
+              ))}
+            </ul>
+
+            <Button
+              href="/contact"
+              variant={pkg.highlight ? 'primary' : 'outline'}
+              class="w-full justify-center"
+              phEvent="cta_click"
+              phProps={`{"location":"services_page","package":"${pkg.name}"}`}
+            >
+              {pkg.cta}
+            </Button>
+          </div>
+        ))}
+      </div>
+      <p class="text-xs text-muted-2 text-center mt-6">Minimum 3-month term on all packages. Prices include VAT.</p>
+    </div>
+  </section>
+
+  <!-- What's in the monthly fee -->
+  <section class="section-padding border-t border-border">
+    <div class="container">
+      <div class="max-w-2xl mb-10">
+        <p class="text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-3">Monthly retainer</p>
+        <h2 class="font-display font-bold text-[clamp(1.75rem,3vw,2.5rem)] text-text mb-3">
+          Everything included, every month
+        </h2>
+        <p class="text-muted">The monthly fee isn't just hosting. It's your website fully managed so you never have to think about it.</p>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+        {monthlyIncludes.map((item) => (
+          <div class="flex items-center gap-4 p-5 rounded-[--radius-card] border border-border bg-surface">
+            <div class="shrink-0 w-10 h-10 rounded-lg bg-surface-2 flex items-center justify-center text-accent">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" set:html={icons[item.icon]} />
+            </div>
+            <span class="text-sm font-medium text-text">{item.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section-padding border-t border-border">
+    <div class="container">
+      <div class="max-w-2xl mb-10">
+        <p class="text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-3">FAQ</p>
+        <h2 class="font-display font-bold text-[clamp(1.75rem,3vw,2.5rem)] text-text">Common questions</h2>
+      </div>
+
+      <div class="max-w-2xl flex flex-col divide-y divide-border">
+        {faqs.map((faq, i) => (
+          <details class="group py-6" name="faq">
+            <summary class="flex items-center justify-between gap-4 cursor-pointer list-none font-display font-semibold text-text hover:text-accent transition-colors">
+              {faq.q}
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                class="shrink-0 transition-transform duration-200 group-open:rotate-45"
+                aria-hidden="true"
+              >
+                <path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </summary>
+            <p class="mt-4 text-muted leading-relaxed pr-8">{faq.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTABanner />
+</PageLayout>

@@ -1,0 +1,85 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '@/layouts/PageLayout.astro';
+import Badge from '@/components/ui/Badge.astro';
+import CTABanner from '@/components/sections/CTABanner.astro';
+
+const entries = await getCollection('portfolio');
+const sorted = entries.sort((a, b) => a.data.order - b.data.order);
+---
+
+<PageLayout
+  title="Portfolio"
+  description="Website projects built by BaldyBuilds for local businesses across Ayrshire and Scotland."
+>
+  <!-- Header -->
+  <section class="section-padding border-b border-border">
+    <div class="container">
+      <p class="text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-4">Portfolio</p>
+      <h1 class="font-display font-bold text-[clamp(2.25rem,4vw,3.5rem)] text-text max-w-2xl mb-4">
+        Work that gets results
+      </h1>
+      <p class="text-lg text-muted max-w-2xl">
+        Every site we build is mobile-first, fast, and designed to turn visitors into enquiries. Here's a sample of recent work.
+      </p>
+    </div>
+  </section>
+
+  <!-- Grid -->
+  <section class="section-padding">
+    <div class="container">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {sorted.map((entry) => (
+          <a
+            href={`/portfolio/${entry.id}`}
+            class="group flex flex-col rounded-[--radius-card] border border-border bg-surface overflow-hidden hover:border-accent/50 transition-colors"
+          >
+            <!-- Screenshot -->
+            <div class="aspect-video bg-surface-2 overflow-hidden">
+              {entry.data.screenshot ? (
+                <img
+                  src={entry.data.screenshot}
+                  alt={`Screenshot of ${entry.data.client} website`}
+                  class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                  width="800"
+                  height="450"
+                  loading="lazy"
+                />
+              ) : (
+                <div class="w-full h-full flex items-center justify-center">
+                  <span class="font-display font-bold text-2xl text-muted-2">{entry.data.client[0]}</span>
+                </div>
+              )}
+            </div>
+            <!-- Content -->
+            <div class="p-6">
+              <div class="flex flex-wrap gap-2 mb-4">
+                {entry.data.tags.map((tag: string) => <Badge>{tag}</Badge>)}
+              </div>
+              <h2 class="font-display font-bold text-lg text-text mb-2 group-hover:text-accent transition-colors">
+                {entry.data.client}
+              </h2>
+              <p class="text-sm text-muted mb-4">{entry.data.outcome}</p>
+              <span class="inline-flex items-center gap-1.5 text-sm font-medium text-accent">
+                View case study
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7h9M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <!-- Empty state (only shows when portfolio is empty) -->
+      {sorted.length === 0 && (
+        <div class="text-center py-20">
+          <p class="text-muted">Portfolio coming soon. Check back shortly.</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <CTABanner
+    headline="Want a site like this?"
+    subtext="Get in touch and I'll put together a proposal tailored to your business."
+  />
+</PageLayout>

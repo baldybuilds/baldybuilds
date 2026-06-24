@@ -1,0 +1,90 @@
+---
+const steps = [
+  {
+    number: '01',
+    title: 'Tell us about your business',
+    description: 'Fill in a short form or give us a call. No lengthy briefs. Just tell us what you do, who your customers are, and what you need.',
+  },
+  {
+    number: '02',
+    title: 'We build it, you approve it',
+    description: "We handle everything: design, copy, photos, the lot. You see a preview before anything goes live and give the final sign-off.",
+  },
+  {
+    number: '03',
+    title: 'Sit back, we handle everything',
+    description: 'Once live, your monthly fee covers hosting, domain renewal, security updates, and minor edits. We keep it running so you can focus on your work.',
+  },
+];
+---
+
+<section class="section-padding border-t border-border">
+  <div class="container">
+    <!-- Header -->
+    <div class="mb-16" data-animate>
+      <p class="text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-3">How it works</p>
+      <h2 class="font-display font-bold text-[clamp(1.75rem,3.5vw,2.75rem)] text-text max-w-xl">
+        From enquiry to live site in a few weeks
+      </h2>
+    </div>
+
+    <!-- Steps -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-0 relative">
+      <!-- Connecting line (desktop only) -->
+      <div
+        class="hidden md:block absolute top-8 left-[16.666%] right-[16.666%] h-px bg-border origin-left"
+        style="animation: none;"
+        aria-hidden="true"
+      >
+        <div
+          class="h-full bg-linear-to-r from-accent/40 to-transparent origin-left"
+          id="steps-line"
+        ></div>
+      </div>
+
+      {steps.map((step, i) => (
+        <div class="relative flex flex-col md:pr-10 pb-10 md:pb-0" data-animate data-delay={String(i + 1)}>
+          <!-- Number bubble -->
+          <div class="flex items-center gap-4 mb-6">
+            <div class={`relative w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 font-display font-bold text-xl z-10 transition-all duration-300
+              ${i === 0
+                ? 'bg-accent text-black'
+                : 'bg-surface border border-border text-muted'
+              }`}
+            >
+              {step.number}
+            </div>
+            {/* Mobile connector */}
+            {i < steps.length - 1 && (
+              <div class="md:hidden flex-1 h-px bg-border"></div>
+            )}
+          </div>
+
+          <h3 class="font-display font-bold text-xl text-text mb-3">{step.title}</h3>
+          <p class="text-muted leading-relaxed text-sm">{step.description}</p>
+
+          {/* Vertical connector (mobile) */}
+          {i < steps.length - 1 && (
+            <div class="md:hidden absolute left-8 top-16 w-px h-8 bg-border" aria-hidden="true"></div>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  // Animate the connecting line in when the section is visible
+  const line = document.getElementById('steps-line');
+  if (line) {
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        line.style.transition = 'transform 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s';
+        line.style.transform = 'scaleX(1)';
+        obs.disconnect();
+      }
+    }, { threshold: 0.3 });
+    line.style.transform = 'scaleX(0)';
+    obs.observe(line.parentElement!);
+  }
+</script>
