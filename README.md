@@ -1,94 +1,50 @@
 <div align="center">
 
-<img src="public/logo.svg" alt="BaldyBuilds" width="64" />
+# Hey, I'm Jamie 👋
 
-# BaldyBuilds
-
-**Web design for Ayrshire tradespeople and small businesses.**
-
-[![Built with Astro](https://img.shields.io/badge/Built%20with-Astro-FF5D01?style=flat-square&logo=astro&logoColor=white)](https://astro.build)
-[![Deployed on Netlify](https://img.shields.io/badge/Deployed%20on-Netlify-00C7B7?style=flat-square&logo=netlify&logoColor=white)](https://netlify.com)
-[![Tailwind CSS v4](https://img.shields.io/badge/Tailwind-v4-38BDF8?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+**Self-taught developer from Ayrshire, Scotland.**
+Building websites for local businesses and working on my own products.
 
 </div>
 
 ---
 
-## About
+### About me
 
-Personal services site for BaldyBuilds. Clean, fast websites built for local tradespeople and small businesses who want something better than a Facebook page.
+I got into web dev the self-taught route: tutorials, docs, a lot of trial and error, and eventually client work. These days I split my time between building sites for local tradespeople and small businesses under [BaldyBuilds](https://baldybuilds.co.uk), and working on my own products whenever I get the chance.
 
-Built dark and bold. Deployed on Netlify. No bloat.
+I care a lot about the frontend. Not just making things look good, but making them fast, accessible, and actually enjoyable to use. I'm comfortable across the full stack but the UI side is where I spend most of my energy.
 
-## Stack
+---
 
-| Layer | Tech |
-|---|---|
-| Framework | [Astro 7](https://astro.build) |
-| Styling | [Tailwind CSS v4](https://tailwindcss.com) (CSS-first, no config file) |
-| Deployment | [Netlify](https://netlify.com) + SSR adapter |
-| Email | [Resend](https://resend.com) |
-| Analytics | [PostHog](https://posthog.com) (EU region) |
-| Language | TypeScript (strict) |
+### Stack
 
-## Pages
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![Astro](https://img.shields.io/badge/Astro-FF5D01?style=flat-square&logo=astro&logoColor=white)
+![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black)
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-38BDF8?style=flat-square&logo=tailwindcss&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)
 
-- `/` — Home
-- `/services` — Packages and pricing
-- `/portfolio` — Project showcase (content collection)
-- `/about` — About Jamie
-- `/contact` — Contact form (SSR, server-side email via Resend)
+---
 
-## Getting Started
+### BaldyBuilds
 
-```bash
-npm install
-npm run dev
-```
+This repo is the source for my personal services site. Built with Astro 7, Tailwind v4, and deployed on Netlify. Dark, fast, no fluff.
 
-The dev server starts at `http://localhost:4321`.
+If you're a local business looking for a proper website, [get in touch](https://baldybuilds.co.uk/contact).
 
-## Environment Variables
+---
 
-Create a `.env` file in the root:
+### Currently
 
-```env
-RESEND_API_KEY=your_key_here
-PUBLIC_POSTHOG_KEY=your_key_here
-CONTACT_EMAIL=your_email_here
-```
-
-## Project Structure
-
-```
-src/
-  pages/
-    api/contact.ts   # SSR contact form endpoint
-    portfolio/       # Dynamic portfolio routes
-  content/
-    portfolio/       # .md files for portfolio entries
-  data/
-    packages.ts      # Pricing packages
-    nav.ts           # Navigation links
-  lib/
-    resend.ts        # Email helper
-public/
-  fonts/             # Self-hosted Sora + Inter (woff2)
-  portfolio/         # Project screenshots
-  logos/             # Client logos
-```
-
-## Build
-
-```bash
-npm run build     # Production build
-npm run preview   # Preview the build locally
-```
+- Building out [BaldyBuilds](https://baldybuilds.co.uk) and getting the first clients through the door
+- Improving as a developer one project at a time
 
 ---
 
 <div align="center">
 
-Built by [Jamie McCallum](https://baldybuilds.co.uk)
+[Website](https://baldybuilds.co.uk) &nbsp;&middot;&nbsp; [Contact](https://baldybuilds.co.uk/contact)
 
 </div>
