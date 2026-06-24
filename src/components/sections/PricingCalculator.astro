@@ -1,0 +1,469 @@
+---
+import { PRICING } from '@/data/calculatorPricing';
+---
+
+<section class="section-padding">
+  <div class="container">
+    <div class="lg:grid lg:grid-cols-[1fr_360px] lg:gap-12 lg:items-start">
+
+      <!-- Left: options -->
+      <div class="flex flex-col gap-12">
+
+        <!-- About your business -->
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-3">Step 1</p>
+          <h2 class="font-display font-bold text-xl text-text mb-6">About your business</h2>
+          <div class="flex flex-col gap-5">
+            <div class="flex flex-col gap-2">
+              <label for="calc-business" class="text-sm font-medium text-text">Business name</label>
+              <input
+                type="text"
+                id="calc-business"
+                autocomplete="organization"
+                placeholder="Smith Plumbing Ltd"
+                class="calc-input"
+              />
+            </div>
+            <div class="flex flex-col gap-2">
+              <label for="calc-desc" class="text-sm font-medium text-text">What does your business do? <span class="text-muted">(optional)</span></label>
+              <textarea
+                id="calc-desc"
+                rows="3"
+                placeholder="We do plumbing and heating work across Ayrshire..."
+                class="calc-input resize-none"
+              ></textarea>
+            </div>
+            <div class="flex flex-col gap-2">
+              <label for="calc-phone" class="text-sm font-medium text-text">Phone number <span class="text-muted">(optional)</span></label>
+              <input
+                type="tel"
+                id="calc-phone"
+                autocomplete="tel"
+                placeholder="07700 900000"
+                class="calc-input"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Requirements -->
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-3">Step 2</p>
+          <h2 class="font-display font-bold text-xl text-text mb-6">Your website requirements</h2>
+          <div class="flex flex-col gap-8">
+
+            <!-- Pages slider -->
+            <div class="flex flex-col gap-3">
+              <div class="flex items-center justify-between">
+                <label for="calc-pages" class="text-sm font-medium text-text">How many pages do you need?</label>
+                <span id="calc-pages-readout" class="font-display font-bold text-accent text-sm">5 pages</span>
+              </div>
+              <input type="range" id="calc-pages" min="1" max="10" value="5" class="calc-slider w-full" />
+              <div class="flex justify-between text-xs text-muted-2 select-none">
+                <span>1 page</span>
+                <span>10 pages</span>
+              </div>
+            </div>
+
+            <!-- Checkboxes -->
+            <div class="flex flex-col gap-5">
+
+              <label class="flex items-start gap-4 cursor-pointer group">
+                <input type="checkbox" id="calc-contact" class="calc-checkbox shrink-0 mt-0.5" />
+                <div>
+                  <span class="text-sm font-medium text-text group-hover:text-accent transition-colors">Contact page</span>
+                  <p class="text-xs text-muted mt-1">A dedicated page with a form so customers can reach you directly.</p>
+                </div>
+              </label>
+
+              <label class="flex items-start gap-4 cursor-pointer group">
+                <input type="checkbox" id="calc-gallery" class="calc-checkbox shrink-0 mt-0.5" />
+                <div>
+                  <span class="text-sm font-medium text-text group-hover:text-accent transition-colors">Image gallery</span>
+                  <p class="text-xs text-muted mt-1">Showcase your work with a photo gallery or portfolio section.</p>
+                </div>
+              </label>
+
+              <label class="flex items-start gap-4 cursor-pointer group">
+                <input type="checkbox" id="calc-has-logo" class="calc-checkbox shrink-0 mt-0.5" checked />
+                <div>
+                  <span class="text-sm font-medium text-text group-hover:text-accent transition-colors">I already have a business logo</span>
+                  <p class="text-xs text-muted mt-1">Uncheck this if you need a logo designed as part of the project.</p>
+                </div>
+              </label>
+
+              <div>
+                <label class="flex items-start gap-4 cursor-pointer group">
+                  <input type="checkbox" id="calc-has-domain" class="calc-checkbox shrink-0 mt-0.5" checked />
+                  <div>
+                    <span class="text-sm font-medium text-text group-hover:text-accent transition-colors">I already have a domain name</span>
+                    <p class="text-xs text-muted mt-1">Uncheck this if you don't have a .co.uk or .com yet.</p>
+                  </div>
+                </label>
+                <div id="calc-domain-addon" class="hidden ml-9 mt-4">
+                  <label class="flex items-start gap-4 cursor-pointer group p-4 rounded-lg border border-border bg-surface-2">
+                    <input type="checkbox" id="calc-wants-domain" class="calc-checkbox shrink-0 mt-0.5" />
+                    <div>
+                      <span class="text-sm font-medium text-text group-hover:text-accent transition-colors">Register a domain for me</span>
+                      <p class="text-xs text-muted mt-1">We'll find and register a .co.uk or .com for your business. First year included, then rolled into your monthly fee.</p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right: sticky price summary -->
+      <div class="mt-12 lg:mt-0 lg:sticky lg:top-24">
+        <div class="rounded-[--radius-card] border border-border bg-surface p-6 flex flex-col gap-5">
+
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-1">Your estimated quote</p>
+            <p class="text-xs text-muted">Adjust your options to see the price update.</p>
+          </div>
+
+          <!-- Breakdown -->
+          <div class="flex flex-col gap-2.5 text-sm">
+            <div class="flex justify-between">
+              <span class="text-muted">Setup fee</span>
+              <span class="text-text font-medium">£{PRICING.BASE_FEE}</span>
+            </div>
+            <div class="flex justify-between" id="calc-line-pages">
+              <span class="text-muted"><span id="calc-line-pages-label">5 pages</span></span>
+              <span class="text-text font-medium" id="calc-line-pages-price">£{5 * PRICING.PER_PAGE}</span>
+            </div>
+            <div class="flex justify-between hidden" id="calc-line-contact">
+              <span class="text-muted">Contact page</span>
+              <span class="text-text font-medium">£{PRICING.CONTACT_PAGE}</span>
+            </div>
+            <div class="flex justify-between hidden" id="calc-line-gallery">
+              <span class="text-muted">Image gallery</span>
+              <span class="text-text font-medium">£{PRICING.IMAGE_GALLERY}</span>
+            </div>
+            <div class="flex justify-between hidden" id="calc-line-logo">
+              <span class="text-muted">Logo design</span>
+              <span class="text-text font-medium">£{PRICING.LOGO_DESIGN}</span>
+            </div>
+            <div class="flex justify-between hidden" id="calc-line-domain">
+              <span class="text-muted">Domain registration</span>
+              <span class="text-text font-medium">£{PRICING.DOMAIN_REGISTRATION}</span>
+            </div>
+          </div>
+
+          <!-- Totals -->
+          <div class="border-t border-border pt-4 flex flex-col gap-2">
+            <div class="flex justify-between items-baseline">
+              <span class="text-sm text-muted">Setup total</span>
+              <span class="font-display font-bold text-2xl text-text" id="calc-total">£{PRICING.BASE_FEE + 5 * PRICING.PER_PAGE}</span>
+            </div>
+            <div class="flex justify-between items-baseline">
+              <span class="text-xs text-muted">Monthly retainer</span>
+              <span class="text-sm font-semibold text-text">£{PRICING.MONTHLY_FEE}/mo</span>
+            </div>
+          </div>
+
+          <!-- Lead capture -->
+          <div class="border-t border-border pt-4 flex flex-col gap-4">
+            <p class="text-xs text-muted">Fill in your details and I'll be in touch with a full quote.</p>
+
+            <input type="text" id="calc-honey" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+            <div class="flex flex-col gap-2">
+              <label for="calc-name" class="text-xs font-medium text-text">Your name <span class="text-accent">*</span></label>
+              <input type="text" id="calc-name" autocomplete="name" placeholder="John Smith" class="calc-input" />
+            </div>
+            <div class="flex flex-col gap-2">
+              <label for="calc-email" class="text-xs font-medium text-text">Email address <span class="text-accent">*</span></label>
+              <input type="email" id="calc-email" autocomplete="email" placeholder="john@example.co.uk" class="calc-input" />
+            </div>
+
+            <button
+              type="button"
+              id="calc-submit"
+              disabled
+              class="inline-flex items-center justify-center gap-2 bg-accent text-black font-semibold text-sm rounded-lg px-6 py-3.5 hover:bg-accent-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full"
+            >
+              Get this quote
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+
+            <div id="calc-status" class="hidden" role="alert" aria-live="polite"></div>
+          </div>
+
+        </div>
+        <p class="text-xs text-muted-2 text-center mt-4">Minimum 3-month term. Prices include VAT.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .calc-input {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+    border-radius: 0.5rem;
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    width: 100%;
+    transition: border-color 0.15s;
+    outline: none;
+  }
+  .calc-input::placeholder { color: var(--color-muted-2); }
+  .calc-input:focus { border-color: var(--color-accent); }
+
+  .calc-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 1.125rem;
+    height: 1.125rem;
+    min-width: 1.125rem;
+    border: 1.5px solid var(--color-border);
+    border-radius: 0.25rem;
+    background-color: var(--color-surface-2);
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s;
+  }
+  .calc-checkbox:checked {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='8' viewBox='0 0 10 8'%3E%3Cpath d='M1 4l2.5 2.5L9 1' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E");
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .calc-checkbox:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+
+  .calc-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--color-surface-2);
+    outline: none;
+    cursor: pointer;
+  }
+  .calc-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    cursor: pointer;
+    border: 2px solid var(--color-bg);
+    transition: background-color 0.15s;
+  }
+  .calc-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    cursor: pointer;
+    border: 2px solid var(--color-bg);
+    border-box: content-box;
+  }
+  .calc-slider:hover::-webkit-slider-thumb { background: var(--color-accent-hover); }
+  .calc-slider:hover::-moz-range-thumb { background: var(--color-accent-hover); }
+</style>
+
+<script define:vars={{ PRICING }}>
+  const state = {
+    pages: 5,
+    needsContactPage: false,
+    needsGallery: false,
+    hasLogo: true,
+    hasDomain: true,
+    wantsDomainRegistered: false,
+  };
+
+  function calculateTotal() {
+    let t = PRICING.BASE_FEE + state.pages * PRICING.PER_PAGE;
+    if (state.needsContactPage)                           t += PRICING.CONTACT_PAGE;
+    if (state.needsGallery)                               t += PRICING.IMAGE_GALLERY;
+    if (!state.hasLogo)                                   t += PRICING.LOGO_DESIGN;
+    if (!state.hasDomain && state.wantsDomainRegistered)  t += PRICING.DOMAIN_REGISTRATION;
+    return t;
+  }
+
+  let animFrame = null;
+  let displayedTotal = calculateTotal();
+
+  function animateTotal(target) {
+    if (animFrame !== null) cancelAnimationFrame(animFrame);
+    const start = displayedTotal;
+    const diff = target - start;
+    if (diff === 0) return;
+    const duration = 220;
+    const startTime = performance.now();
+    const el = document.getElementById('calc-total');
+
+    function step(now) {
+      const p = Math.min((now - startTime) / duration, 1);
+      const eased = p < 0.5 ? 2 * p * p : -1 + (4 - 2 * p) * p;
+      const current = Math.round(start + diff * eased);
+      if (el) el.textContent = '£' + current;
+      if (p < 1) {
+        animFrame = requestAnimationFrame(step);
+      } else {
+        displayedTotal = target;
+        animFrame = null;
+      }
+    }
+    animFrame = requestAnimationFrame(step);
+  }
+
+  function toggleLine(id, show) {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('hidden', !show);
+  }
+
+  function renderBreakdown() {
+    const total = calculateTotal();
+
+    const pagesLabel = document.getElementById('calc-line-pages-label');
+    const pagesPrice = document.getElementById('calc-line-pages-price');
+    if (pagesLabel) pagesLabel.textContent = state.pages + (state.pages === 1 ? ' page' : ' pages');
+    if (pagesPrice) pagesPrice.textContent = '£' + (state.pages * PRICING.PER_PAGE);
+
+    toggleLine('calc-line-contact', state.needsContactPage);
+    toggleLine('calc-line-gallery', state.needsGallery);
+    toggleLine('calc-line-logo', !state.hasLogo);
+    toggleLine('calc-line-domain', !state.hasDomain && state.wantsDomainRegistered);
+
+    animateTotal(total);
+  }
+
+  // Pages slider
+  const pagesSlider = document.getElementById('calc-pages');
+  const pagesReadout = document.getElementById('calc-pages-readout');
+  pagesSlider?.addEventListener('input', () => {
+    state.pages = Number(pagesSlider.value);
+    if (pagesReadout) pagesReadout.textContent = state.pages + (state.pages === 1 ? ' page' : ' pages');
+    renderBreakdown();
+  });
+
+  // Checkboxes
+  document.getElementById('calc-contact')?.addEventListener('change', (e) => {
+    state.needsContactPage = e.target.checked;
+    renderBreakdown();
+  });
+  document.getElementById('calc-gallery')?.addEventListener('change', (e) => {
+    state.needsGallery = e.target.checked;
+    renderBreakdown();
+  });
+  document.getElementById('calc-has-logo')?.addEventListener('change', (e) => {
+    state.hasLogo = e.target.checked;
+    renderBreakdown();
+  });
+
+  const hasDomainCb = document.getElementById('calc-has-domain');
+  const domainAddon = document.getElementById('calc-domain-addon');
+  const wantsDomainCb = document.getElementById('calc-wants-domain');
+
+  hasDomainCb?.addEventListener('change', (e) => {
+    state.hasDomain = e.target.checked;
+    if (state.hasDomain) {
+      state.wantsDomainRegistered = false;
+      if (wantsDomainCb) wantsDomainCb.checked = false;
+      domainAddon?.classList.add('hidden');
+    } else {
+      domainAddon?.classList.remove('hidden');
+    }
+    renderBreakdown();
+  });
+  wantsDomainCb?.addEventListener('change', (e) => {
+    state.wantsDomainRegistered = e.target.checked;
+    renderBreakdown();
+  });
+
+  // Submit gating
+  const nameInput = document.getElementById('calc-name');
+  const emailInput = document.getElementById('calc-email');
+  const submitBtn = document.getElementById('calc-submit');
+
+  function checkSubmitEnabled() {
+    if (submitBtn) {
+      submitBtn.disabled = !(nameInput?.value.trim() && emailInput?.value.trim());
+    }
+  }
+  nameInput?.addEventListener('input', checkSubmitEnabled);
+  emailInput?.addEventListener('input', checkSubmitEnabled);
+
+  // Submission
+  submitBtn?.addEventListener('click', async () => {
+    const name       = nameInput?.value.trim() ?? '';
+    const email      = emailInput?.value.trim() ?? '';
+    const business   = document.getElementById('calc-business')?.value.trim() ?? '';
+    const desc       = document.getElementById('calc-desc')?.value.trim() ?? '';
+    const phone      = document.getElementById('calc-phone')?.value.trim() ?? '';
+    const honey      = document.getElementById('calc-honey')?.value ?? '';
+    const total      = calculateTotal();
+    const statusEl   = document.getElementById('calc-status');
+
+    const lines = [
+      'Quote from pricing calculator',
+      '',
+      ...(desc ? ['Business description: ' + desc, ''] : []),
+      'Requirements:',
+      '  Pages: ' + state.pages,
+      '  Contact page: ' + (state.needsContactPage ? 'Yes' : 'No'),
+      '  Image gallery: ' + (state.needsGallery ? 'Yes' : 'No'),
+      '  Logo design needed: ' + (!state.hasLogo ? 'Yes' : 'No'),
+      '  Domain registration: ' + (!state.hasDomain && state.wantsDomainRegistered ? 'Yes' : 'No'),
+      '',
+      'Estimated setup: £' + total,
+      'Monthly fee: £' + PRICING.MONTHLY_FEE + '/mo',
+    ];
+    const message = lines.join('\n');
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+    if (statusEl) statusEl.className = 'hidden';
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, business, email, phone, message, _honey: honey }),
+      });
+      const json = await res.json();
+
+      if (res.ok && json.success) {
+        if (statusEl) {
+          statusEl.className = 'rounded-lg border border-green-800 bg-green-900/20 text-green-400 px-4 py-3 text-sm';
+          statusEl.textContent = "Thanks, I'll be in touch within 24 hours.";
+        }
+        if (nameInput) nameInput.value = '';
+        if (emailInput) emailInput.value = '';
+
+        if (typeof window !== 'undefined' && (window).posthog) {
+          (window).posthog.capture('quote_calculator_submitted', {
+            setup_total: total,
+            pages: state.pages,
+            contact_page: state.needsContactPage,
+            image_gallery: state.needsGallery,
+            logo_design: !state.hasLogo,
+            domain_registration: !state.hasDomain && state.wantsDomainRegistered,
+          });
+        }
+      } else {
+        throw new Error(json.error ?? 'Something went wrong');
+      }
+    } catch (err) {
+      if (statusEl) {
+        statusEl.className = 'rounded-lg border border-red-800 bg-red-900/20 text-red-400 px-4 py-3 text-sm';
+        statusEl.textContent = (err && err.message) ? err.message : 'Something went wrong. Please try again or email hello@baldybuilds.co.uk.';
+      }
+    } finally {
+      submitBtn.innerHTML = 'Get this quote <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      checkSubmitEnabled();
+    }
+  });
+</script>

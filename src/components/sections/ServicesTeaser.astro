@@ -1,99 +1,58 @@
 ---
 import Button from '@/components/ui/Button.astro';
-import { packages } from '@/data/packages';
+
+const points = [
+  {
+    title: 'You choose the pages',
+    body: 'Anywhere from 1 to 10 pages. You only pay for what your business actually needs.',
+    icon: '<path d="M4 4h10M4 8h7M4 12h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
+  },
+  {
+    title: 'Add what you need',
+    body: 'Contact form, image gallery, logo design, domain registration. Pick your add-ons and the price updates live.',
+    icon: '<path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
+  },
+  {
+    title: 'One flat monthly fee',
+    body: '£40/mo covers hosting, domain, SSL, security updates, and up to 1hr of edits every month.',
+    icon: '<rect x="3" y="5" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 9h12" stroke="currentColor" stroke-width="1.5"/>',
+  },
+];
 ---
 
 <section class="section-padding border-t border-border">
   <div class="container">
-    <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12" data-animate>
       <div>
         <p class="text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-3">Pricing</p>
         <h2 class="font-display font-bold text-[clamp(1.75rem,3.5vw,2.75rem)] text-text">
-          Simple, fixed pricing
+          Pricing built around you
         </h2>
-        <p class="text-muted mt-2 max-w-md">No hourly rates. No surprise invoices. Just a setup fee and a monthly retainer.</p>
+        <p class="text-muted mt-2 max-w-md">No fixed packages. No paying for things you don't need. Build your quote and see your price in real time.</p>
       </div>
-      <Button href="/services" variant="outline">See full details</Button>
+      <Button href="/services" variant="outline" phEvent="cta_click" phProps='{"location":"services_teaser","label":"Build your quote"}'>Build your quote</Button>
     </div>
 
-    <!-- Package cards -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {packages.map((pkg, i) => (
+      {points.map((point, i) => (
         <div
-          class={`relative flex flex-col rounded-[--radius-card] border p-6 transition-all duration-300 hover:-translate-y-1 group
-            ${pkg.highlight
-              ? 'border-accent/50 bg-surface'
-              : 'border-border bg-surface hover:border-border'
-            }`}
+          class="flex flex-col gap-4 rounded-[--radius-card] border border-border bg-surface p-6"
           data-animate="scale"
           data-delay={String(i + 1)}
         >
-          {/* Highlight card ambient glow */}
-          {pkg.highlight && (
-            <div
-              class="absolute inset-0 rounded-[--radius-card] pointer-events-none"
-              style="background: radial-gradient(ellipse at top, rgba(245,158,11,0.08), transparent 70%); animation: glow-pulse 3s ease-in-out infinite;"
-              aria-hidden="true"
-            ></div>
-          )}
-
-          {pkg.highlight && (
-            <span class="absolute -top-3 left-6 bg-accent text-black text-xs font-bold px-3 py-1 rounded-full">
-              Most popular
-            </span>
-          )}
-
-          <div class="mb-6">
-            <h3 class="font-display font-bold text-xl text-text mb-1">{pkg.name}</h3>
-            <p class="text-sm text-muted">{pkg.tagline}</p>
+          <div class="w-10 h-10 rounded-lg bg-surface-2 flex items-center justify-center text-accent shrink-0">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" set:html={point.icon} aria-hidden="true" />
           </div>
-
-          <!-- Price -->
-          <div class="mb-6">
-            {pkg.poa ? (
-              <p class="font-display font-bold text-3xl text-text">POA</p>
-            ) : (
-              <>
-                <div class="flex items-baseline gap-2">
-                  <span class="font-display font-bold text-3xl text-text">£{pkg.setup}</span>
-                  <span class="text-muted text-sm">setup</span>
-                </div>
-                <p class="text-sm text-muted mt-1">then £{pkg.monthly}/mo</p>
-              </>
-            )}
+          <div>
+            <h3 class="font-display font-semibold text-text mb-1">{point.title}</h3>
+            <p class="text-sm text-muted leading-relaxed">{point.body}</p>
           </div>
-
-          <!-- Top features -->
-          <ul class="flex flex-col gap-2 mb-8 flex-1">
-            {pkg.features.slice(0, 4).map((feature) => (
-              <li class="flex items-start gap-2 text-sm text-muted">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="shrink-0 mt-0.5" aria-hidden="true">
-                  <path d="M3 8l3 3 7-7" stroke="var(--color-accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                {feature}
-              </li>
-            ))}
-          </ul>
-
-          <a
-            href="/contact"
-            class={`btn-shimmer inline-flex items-center justify-center gap-2 font-semibold text-sm rounded-lg px-6 py-3 transition-all duration-200 active:scale-[0.98]
-              ${pkg.highlight
-                ? 'bg-accent text-black hover:bg-accent-hover'
-                : 'border border-border text-text hover:border-accent hover:text-accent'
-              }`}
-            data-ph-event="cta_click"
-            data-ph-props={`{"location":"services_teaser","package":"${pkg.name}"}`}
-          >
-            {pkg.cta}
-          </a>
         </div>
       ))}
     </div>
 
     <p class="text-xs text-muted-2 text-center mt-6" data-animate data-delay="4">
-      Monthly fee covers hosting, domain, SSL, security updates, and up to 1hr of edits. Minimum 3-month term.
+      Minimum 3-month term. Prices include VAT.
     </p>
   </div>
 </section>

@@ -1,8 +1,8 @@
 ---
 import PageLayout from '@/layouts/PageLayout.astro';
-import Button from '@/components/ui/Button.astro';
 import CTABanner from '@/components/sections/CTABanner.astro';
-import { packages, monthlyIncludes } from '@/data/packages';
+import PricingCalculator from '@/components/sections/PricingCalculator.astro';
+import { monthlyIncludes } from '@/data/packages';
 
 const faqs = [
   {
@@ -23,7 +23,7 @@ const faqs = [
   },
   {
     q: "How long does it take to build?",
-    a: "Most Starter and Standard sites are live within 2–3 weeks of receiving your content and sign-off. Custom projects vary depending on scope.",
+    a: "Most sites are live within 2 to 3 weeks of receiving your content and sign-off. Larger or more complex projects vary depending on scope.",
   },
 ];
 
@@ -39,80 +39,22 @@ const icons: Record<string, string> = {
 
 <PageLayout
   title="Services & Pricing"
-  description="Clear, fixed pricing for professional websites. Starter from £600 setup + £35/mo. Standard from £850 setup + £45/mo. Everything included."
+  description="Build a custom quote for your new website. Choose your pages, add-ons, and see a live price. Setup from £300, then £40/mo all-inclusive."
 >
   <!-- Page header -->
   <section class="section-padding border-b border-border">
     <div class="container">
       <p class="text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-4">Pricing</p>
       <h1 class="font-display font-bold text-[clamp(2.25rem,4vw,3.5rem)] text-text max-w-2xl mb-4">
-        Simple, fixed pricing
+        Build your quote
       </h1>
       <p class="text-lg text-muted max-w-2xl">
-        No hourly rates. No surprise invoices. A one-off setup fee to build your site, then a monthly fee that covers everything: hosting, domain, updates, support.
+        No hourly rates. No surprise invoices. Pick what you need and see your price update in real time. A one-off setup fee to build your site, then a flat £40/mo that covers everything.
       </p>
     </div>
   </section>
 
-  <!-- Package cards -->
-  <section class="section-padding">
-    <div class="container">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {packages.map((pkg) => (
-          <div class={`relative flex flex-col rounded-[--radius-card] border p-8 ${pkg.highlight ? 'border-accent' : 'border-border'} bg-surface`}>
-            {pkg.highlight && (
-              <span class="absolute -top-3 left-6 bg-accent text-black text-xs font-bold px-3 py-1 rounded-full">
-                Most popular
-              </span>
-            )}
-
-            <div class="mb-6">
-              <h2 class="font-display font-bold text-2xl text-text mb-1">{pkg.name}</h2>
-              <p class="text-sm text-muted">{pkg.tagline}</p>
-            </div>
-
-            <!-- Price -->
-            <div class="pb-6 mb-6 border-b border-border">
-              {pkg.poa ? (
-                <p class="font-display font-bold text-4xl text-text">POA</p>
-              ) : (
-                <>
-                  <div class="flex items-baseline gap-2">
-                    <span class="font-display font-bold text-4xl text-text">£{pkg.setup}</span>
-                    <span class="text-muted text-sm">setup fee</span>
-                  </div>
-                  <p class="text-muted mt-2">then <strong class="text-text">£{pkg.monthly}/mo</strong></p>
-                </>
-              )}
-            </div>
-
-            <!-- All features -->
-            <ul class="flex flex-col gap-3 flex-1 mb-8">
-              {pkg.features.map((feature) => (
-                <li class="flex items-start gap-3 text-sm text-muted">
-                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" class="shrink-0 mt-0.5" aria-hidden="true">
-                    <path d="M3 9l4 4 8-8" stroke="var(--color-accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  {feature}
-                </li>
-              ))}
-            </ul>
-
-            <Button
-              href="/contact"
-              variant={pkg.highlight ? 'primary' : 'outline'}
-              class="w-full justify-center"
-              phEvent="cta_click"
-              phProps={`{"location":"services_page","package":"${pkg.name}"}`}
-            >
-              {pkg.cta}
-            </Button>
-          </div>
-        ))}
-      </div>
-      <p class="text-xs text-muted-2 text-center mt-6">Minimum 3-month term on all packages. Prices include VAT.</p>
-    </div>
-  </section>
+  <PricingCalculator />
 
   <!-- What's in the monthly fee -->
   <section class="section-padding border-t border-border">
@@ -147,7 +89,7 @@ const icons: Record<string, string> = {
       </div>
 
       <div class="max-w-2xl flex flex-col divide-y divide-border">
-        {faqs.map((faq, i) => (
+        {faqs.map((faq) => (
           <details class="group py-6" name="faq">
             <summary class="flex items-center justify-between gap-4 cursor-pointer list-none font-display font-semibold text-text hover:text-accent transition-colors">
               {faq.q}
